@@ -21,7 +21,7 @@ module.exports = {
   },
   rules: {
     'ember/avoid-leaking-state-in-ember-objects': 0,
-    'ember/no-observers': 0
+    'ember/no-observers': 0,
   },
   overrides: [
     // node files

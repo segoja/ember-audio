@@ -7,12 +7,12 @@ import layout from '../templates/components/mp3-player';
 export default Component.extend({
   layout,
 
-  percentPlayed: computed('track.percentPlayed', function() {
+  percentPlayed: computed('track.percentPlayed', function () {
     const percentPlayed = this.get('track.percentPlayed');
     return htmlSafe(`width: ${percentPlayed}%;`);
   }),
 
-  percentGain: computed('track.percentGain', function() {
+  percentGain: computed('track.percentGain', function () {
     const percentGain = this.get('track.percentGain');
     return htmlSafe(`height: ${percentGain}%;`);
   }),
@@ -38,10 +38,10 @@ export default Component.extend({
       const height = e.target.offsetParent.offsetHeight;
       const offset = e.pageY - $(e.target).parent().offset().top;
       const adjustedHeight = height * 0.8;
-      const adjustedOffset = offset - ((height - adjustedHeight) / 2);
+      const adjustedOffset = offset - (height - adjustedHeight) / 2;
       const newGain = adjustedOffset / adjustedHeight;
 
       this.track.changeGainTo(newGain).from('inverseRatio');
-    }
-  }
+    },
+  },
 });

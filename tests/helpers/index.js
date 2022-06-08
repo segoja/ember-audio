@@ -7,7 +7,7 @@ import {
 // This file exists to provide wrappers around ember-qunit's / ember-mocha's
 // test setup functions. This way, you can easily extend the setup that is
 // needed per test type.
-
+/*
 function setupApplicationTest(hooks, options) {
   upstreamSetupApplicationTest(hooks, options);
 
@@ -37,6 +37,6 @@ function setupTest(hooks, options) {
   upstreamSetupTest(hooks, options);
 
   // Additional setup for unit tests can be done here.
-}
+} */
 
 export { setupApplicationTest, setupRenderingTest, setupTest };

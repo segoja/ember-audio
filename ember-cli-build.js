@@ -2,24 +2,24 @@
 
 const EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
 
-module.exports = function(defaults) {
+module.exports = function (defaults) {
   var app = new EmberAddon(defaults, {
     stylusOptions: {
-      outputFile: 'dummy.css'
+      outputFile: 'dummy.css',
     },
 
     'ember-prism': {
       theme: 'okaidia',
-      components: ['javascript', 'handlebars', 'markup-templating']
+      components: ['javascript', 'handlebars', 'markup-templating'],
     },
 
     'ember-cli-uglify': {
-      exclude: ['piano.js']
+      exclude: ['piano.js'],
     },
 
     fingerprint: {
-      exclude: ['piano.js']
-    }
+      exclude: ['piano.js'],
+    },
   });
 
   /*

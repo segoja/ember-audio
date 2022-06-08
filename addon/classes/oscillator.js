@@ -3,6 +3,7 @@ import { on } from '@ember/object/evented';
 import EmberObject from '@ember/object';
 import { Connectable, Playable } from 'ember-audio/mixins';
 import { Connection } from 'ember-audio';
+import Ember from 'ember';
 
 /**
  * A class that represents an oscillator for a synthesizer. Capable of creating
@@ -35,7 +36,6 @@ import { Connection } from 'ember-audio';
  * @todo figure out why `isPlaying` isn't working for Oscillator
  */
 const Oscillator = EmberObject.extend(Connectable, Playable, {
-
   /**
    * Determines the type of wave output by the OscillatorNode instance.
    * Corresponds directly to `type` from
@@ -85,7 +85,7 @@ const Oscillator = EmberObject.extend(Connectable, Playable, {
     'highshelf',
     'peaking',
     'notch',
-    'allpass'
+    'allpass',
   ],
 
   /**
@@ -94,7 +94,7 @@ const Oscillator = EmberObject.extend(Connectable, Playable, {
    * @protected
    * @method _initConnections
    */
-  _initConnections: on('init', function() {
+  _initConnections: on('init', function () {
     const filters = this._filters;
     const bufferSource = this._createBufferSource();
     const gain = this._createGainNode();
@@ -102,7 +102,7 @@ const Oscillator = EmberObject.extend(Connectable, Playable, {
     const destination = this._createDestinationNode();
 
     // always start with source
-    const connections = A([ bufferSource ]);
+    const connections = A([bufferSource]);
 
     // Add filters if they have been defined
     filters.map((filterName) => {
@@ -114,7 +114,7 @@ const Oscillator = EmberObject.extend(Connectable, Playable, {
     });
 
     // add gain, panner, and destination connections
-    connections.pushObjects([ gain, panner, destination ]);
+    connections.pushObjects([gain, panner, destination]);
 
     this.set('connections', connections);
     this.wireConnections();
@@ -137,13 +137,13 @@ const Oscillator = EmberObject.extend(Connectable, Playable, {
       onPlaySetAttrsOnNode: [
         {
           attrNameOnNode: 'frequency.value',
-          relativePath: 'frequency'
+          relativePath: 'frequency',
         },
         {
           attrNameOnNode: 'type',
-          relativePath: 'type'
-        }
-      ]
+          relativePath: 'type',
+        },
+      ],
     });
   },
 
@@ -163,9 +163,9 @@ const Oscillator = EmberObject.extend(Connectable, Playable, {
       onPlaySetAttrsOnNode: [
         {
           attrNameOnNode: 'gain.value',
-          relativePath: 'gain'
-        }
-      ]
+          relativePath: 'gain',
+        },
+      ],
     });
   },
 
@@ -181,7 +181,7 @@ const Oscillator = EmberObject.extend(Connectable, Playable, {
     return Connection.create({
       name: 'panner',
       source: 'audioContext',
-      createCommand: 'createStereoPanner'
+      createCommand: 'createStereoPanner',
     });
   },
 
@@ -196,7 +196,7 @@ const Oscillator = EmberObject.extend(Connectable, Playable, {
   _createDestinationNode() {
     return Connection.create({
       name: 'destination',
-      path: 'audioContext.destination'
+      path: 'audioContext.destination',
     });
   },
 
@@ -219,21 +219,21 @@ const Oscillator = EmberObject.extend(Connectable, Playable, {
       onPlaySetAttrsOnNode: [
         {
           attrNameOnNode: 'type',
-          value: type
+          value: type,
         },
         {
           attrNameOnNode: 'frequency.value',
-          relativePath: `${type}.frequency`
+          relativePath: `${type}.frequency`,
         },
         {
           attrNameOnNode: 'q.value',
-          relativePath: `${type}.q`
+          relativePath: `${type}.q`,
         },
         {
           attrNameOnNode: 'gain.value',
-          relativePath: `${type}.gain`
-        }
-      ]
+          relativePath: `${type}.gain`,
+        },
+      ],
     });
   },
 
@@ -323,7 +323,7 @@ const Oscillator = EmberObject.extend(Connectable, Playable, {
    * @property allpass
    * @type {object}
    */
-  allpass: null
+  allpass: null,
 });
 
 export default Oscillator;

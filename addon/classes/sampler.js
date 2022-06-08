@@ -1,5 +1,6 @@
 import { on } from '@ember/object/evented';
 import EmberObject from '@ember/object';
+import Ember from 'ember';
 
 /**
  * An instance of the Sampler class behaves just like a Sound, but allows
@@ -14,7 +15,6 @@ import EmberObject from '@ember/object';
  * @todo loop
  */
 const Sampler = EmberObject.extend({
-
   /**
    * Determines the gain applied to each sample.
    *
@@ -147,11 +147,11 @@ const Sampler = EmberObject.extend({
    * @private
    * @method _initSounds
    */
-  _initSounds: on('init', function() {
+  _initSounds: on('init', function () {
     if (!this.sounds) {
       this.set('sounds', new Set());
     }
-  })
+  }),
 });
 
 export default Sampler;

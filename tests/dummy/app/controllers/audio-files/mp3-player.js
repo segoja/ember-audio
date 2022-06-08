@@ -14,7 +14,7 @@ export default Controller.extend({
         band called "Bringing Down Broadway" and this is one of our songs.
         This is from like 10 years ago (I'm sooooo oooooollldddd).
         The album is titled, "It's all Gone South", I recorded it myself, and it
-        was a commercial falure. I think it's awesome.`
+        was a commercial falure. I think it's awesome.`,
     },
     {
       name: 'do-wah-diddy',
@@ -24,8 +24,8 @@ export default Controller.extend({
         is from about 8 years ago (please see comment on "Barely There" about
         being old). David is "rapping" and I'm singing. Please
         keep in mind that this is from a time when "autotune" was in it's
-        infancy. Also, "autotune" is for assholes.`
-    }
+        infancy. Also, "autotune" is for assholes.`,
+    },
   ],
 
   actions: {
@@ -36,11 +36,13 @@ export default Controller.extend({
       this.set('trackIsLoading', true);
       audio.pauseAll();
 
-      audio.load(`/ember-audio/${track.name}.mp3`).asTrack(track.name)
+      audio
+        .load(`/ember-audio/${track.name}.mp3`)
+        .asTrack(track.name)
         .then((trackInstance) => {
           this.set('selectedTrack.trackInstance', trackInstance);
           this.set('trackIsLoading', false);
         });
-    }
-  }
+    },
+  },
 });
