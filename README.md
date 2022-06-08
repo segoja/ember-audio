@@ -28,18 +28,20 @@ large project, and I would love to know if it's working out for people! You can
 contact me via `@sethbrasile` on the ember community slack, or via email.
 
 
-Compatibility
-------------------------------------------------------------------------------
+## Compatibility
 
-* Ember.js v2.18 or above
-* Ember CLI v2.13 or above
-
-* `ember serve`
-* Visit your app at http://localhost:4200/ember-audio/.
+* Ember.js v3.24 or above
+* Ember CLI v3.24 or above
+* Node.js v12 or above
 
 
-Usage
-------------------------------------------------------------------------------
+## Installation
+
+```
+ember install ember-audio
+```
+
+## Usage
 
 ## Building yuidoc Documentation
 
@@ -49,13 +51,11 @@ For more information on using ember-cli, visit [http://ember-cli.com/](http://em
 [Longer description of how to use the addon in apps.]
 
 
-Contributing
-------------------------------------------------------------------------------
+## Contributing
 
 See the [Contributing](CONTRIBUTING.md) guide for details.
 
 
-License
-------------------------------------------------------------------------------
+## License
 
 This project is licensed under the [MIT License](LICENSE.md).

@@ -20,7 +20,7 @@
       <button class="btn btn-primary" {{action "play"}}>PLAY</button>
 
       <div>
-        <label>Tempo {{input value=bpm}}</label>
+        <label>Tempo <Input @value={{bpm}} /></label>
       </div>
     </div>
 
@@ -70,35 +70,35 @@
 </div>
 
 <div class="content">
-  {{#code-block language="handlebars"}}
-  \{{#if isLoading}}
-    \{{!-- Some loading indicator... --}}
-  \{{else}}
+  <CodeBlock @language="handlebars">
+  {{#if isLoading}}
+    {{!-- Some loading indicator... --}}
+  {{else}}
     &lt;div class="controls">
-      &lt;button class="btn btn-primary" \{{action "play"}}>PLAY&lt;/button>
+      &lt;button class="btn btn-primary" {{action "play"}}>PLAY&lt;/button>
 
       &lt;div>
-        &lt;label>Tempo \{{input value=bpm}}&lt;/label>
+        &lt;label>Tempo {{input value=bpm}}&lt;/label>
       &lt;/div>
     &lt;/div>
 
     &lt;div class="beat-machine">
-      \{{#each beatTracks as |beatTrack|}}
+      {{#each beatTracks as |beatTrack|}}
         &lt;div class="beat-lane">
-          &lt;p class="text">\{{beatTrack.name}}&lt;/p>
+          &lt;p class="text">{{beatTrack.name}}&lt;/p>
 
-          \{{#each beatTrack.beats as |beat|}}
-            &lt;div class="beat-pad" \{{action "toggleActive" beat}}>
-              &lt;span class="pad \{{if beat.active "active"}} \{{if beat.isPlaying "playing"}} \{{if beat.currentTimeIsPlaying "highlighted"}}">&lt;/span>
+          {{#each beatTrack.beats as |beat|}}
+            &lt;div class="beat-pad" {{action "toggleActive" beat}}>
+              &lt;span class="pad {{if beat.active "active"}} {{if beat.isPlaying "playing"}} {{if beat.currentTimeIsPlaying "highlighted"}}">&lt;/span>
             &lt;/div>
-          \{{/each}}
+          {{/each}}
         &lt;/div>
-      \{{/each}}
+      {{/each}}
     &lt;/div>
-  \{{/if}}
-  {{/code-block}}
+  {{/if}}
+  </CodeBlock>
 
-  {{#code-block language="javascript"}}
+  <CodeBlock @language="javascript">
   export default Ember.Whatever.extend({
     audio: Ember.inject.service(),
     beatTracks: null,
@@ -170,7 +170,7 @@
       }
     }
   });
-  {{/code-block}}
+  </CodeBlock>
 </div>
 
 <div class="content">

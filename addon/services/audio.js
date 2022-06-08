@@ -165,12 +165,12 @@ export default Service.extend({
    * @todo find a better way than returning a POJO
    */
   load(src) {
-    const audioContext = this.get('audioContext');
+    const audioContext = this.audioContext;
     const _load = this._load.bind(this);
     const _loadFont = this._loadFont.bind(this);
     const _loadBeatTrack = this._loadBeatTrack.bind(this);
     const _createSoundsArray = this._createSoundsArray.bind(this);
-    const samplersRegister = this.get('_samplers');
+    const samplersRegister = this._samplers;
     const { createNoteArray } = this;
 
     return {
@@ -307,7 +307,7 @@ export default Service.extend({
    * @return {Sound} The created white noise Sound instance.
    */
   createWhiteNoise(opts={}) {
-    const audioContext = this.get('audioContext');
+    const audioContext = this.audioContext;
     const bufferSize = audioContext.sampleRate;
     const audioBuffer = audioContext.createBuffer(1, bufferSize, bufferSize);
     const output = audioBuffer.getChannelData(0);
@@ -330,7 +330,7 @@ export default Service.extend({
    * @return {Oscillator} The created Oscillator instance.
    */
   createOscillator(opts={}) {
-    const audioContext = this.get('audioContext');
+    const audioContext = this.audioContext;
     return Oscillator.create(Object.assign(opts, { audioContext }));
   },
 
@@ -346,7 +346,7 @@ export default Service.extend({
    * provided name.
    */
   getBeatTrack(name) {
-    return this.get('_beatTracks').get(name);
+    return this._beatTracks.get(name);
   },
 
   /**
@@ -361,7 +361,7 @@ export default Service.extend({
    * @return {Sound} returns the Sound instance that matches the provided name.
    */
   getSound(name) {
-    return this.get('_sounds').get(name);
+    return this._sounds.get(name);
   },
 
   /**
@@ -376,7 +376,7 @@ export default Service.extend({
    * @return {Track} Returns the Track instance that matches the provided name.
    */
   getTrack(name) {
-    return this.get('_tracks').get(name);
+    return this._tracks.get(name);
   },
 
   /**
@@ -396,7 +396,7 @@ export default Service.extend({
    * note from the requested font to be played.
    */
   getFont(name) {
-    return this.get('_fonts').get(name);
+    return this._fonts.get(name);
   },
 
   /**
@@ -411,7 +411,7 @@ export default Service.extend({
    * @return {Sampler} returns the Sampler instance that matches the provided name.
    */
   getSampler(name) {
-    return this.get('_samplers').get(name);
+    return this._samplers.get(name);
   },
 
   /**
@@ -439,7 +439,7 @@ export default Service.extend({
    * @method pauseAll
    */
   pauseAll() {
-    for (let sound of this.get('_tracks').values()) {
+    for (let sound of this._tracks.values()) {
       sound.pause();
     }
   },
@@ -471,15 +471,15 @@ export default Service.extend({
   _getRegisterFor(type) {
     switch (type) {
       case 'sound':
-        return this.get('_sounds');
+        return this._sounds;
       case 'track':
-        return this.get('_tracks');
+        return this._tracks;
       case 'beatTrack':
-        return this.get('_beatTracks');
+        return this._beatTracks;
       case 'sampler':
-        return this.get('_samplers');
+        return this._samplers;
       case 'font':
-        return this.get('_fonts');
+        return this._fonts;
     }
   },
 
@@ -533,7 +533,7 @@ export default Service.extend({
    * to an instance of a Sound, Track, or BeatTrack
    */
   _load(name, src, type) {
-    const audioContext = this.get('audioContext');
+    const audioContext = this.audioContext;
     const register = this._getRegisterFor(type);
 
     if (register.has(name)) {
@@ -624,7 +624,7 @@ export default Service.extend({
    * @return {Promise|BeatTrack} A promise that resolves to a BeatTrack instance.
    */
   _loadBeatTrack(name, srcArray) {
-    const audioContext = this.get('audioContext');
+    const audioContext = this.audioContext;
 
     return this._createSoundsArray(name, srcArray).then((soundsArray) => {
       const sounds = new Set(soundsArray);
@@ -666,7 +666,7 @@ export default Service.extend({
    * values, `[noteName, decodedAudio]`.
    */
   _extractDecodedKeyValuePairs(notes) {
-    const ctx = this.get('audioContext');
+    const ctx = this.audioContext;
     const promises = [];
 
     async function decodeNote(noteName, buffer) {
@@ -713,7 +713,7 @@ export default Service.extend({
    * @return {array} Returns an Array of {{#crossLink "Note"}}Notes{{/crossLink}}
    */
   _createNoteObjectsForFont(audioData, instrumentName) {
-    const audioContext = this.get('audioContext');
+    const audioContext = this.audioContext;
     const fontsRegister = this._getRegisterFor('font');
     const font = fontsRegister.get(instrumentName);
 

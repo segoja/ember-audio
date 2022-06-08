@@ -29,20 +29,20 @@
 </div>
 
 <div class="content">
-  {{#code-block language="handlebars"}}
-    \{{#if isLoading}}
-      \{{!-- some loading indicator... --}}
-    \{{else}}
-      \{{#each drums as |drum|}}
+  <CodeBlock @language="handlebars">
+    {{#if isLoading}}
+      {{!-- some loading indicator... --}}
+    {{else}}
+      {{#each drums as |drum|}}
         &lt;div class="beat-pad">
-          &lt;span class="text">\{{drum.name}}&lt;/span>
-          &lt;span class="pad" \{{action "playDrum" drum}}>&lt;/span>
+          &lt;span class="text">{{drum.name}}&lt;/span>
+          &lt;span class="pad" {{action "playDrum" drum}}>&lt;/span>
         &lt;/div>
-      \{{/each}}
-    \{{/if}}
-  {{/code-block}}
+      {{/each}}
+    {{/if}}
+  </CodeBlock>
 
-  {{#code-block language="javascript"}}
+  <CodeBlock @language="javascript">
     export default Ember.Whatever.extend({
       audio: Ember.inject.service(),
       drums: Ember.A(),
@@ -74,5 +74,5 @@
         }
       }
     });
-  {{/code-block}}
+  </CodeBlock>
 </div>
