@@ -1,5 +1,6 @@
 import EmberObject from '@ember/object';
 import { later } from '@ember/runloop';
+import { tracked } from '@glimmer/tracking';
 
 /**
  * This class represents a single "beat" for a rhythmic instrument. An instance of this
@@ -24,7 +25,9 @@ import { later } from '@ember/runloop';
  * @class Beat
  * @todo add playAt
  */
-const Beat = EmberObject.extend({
+ 
+ 
+export default class Beat extends EmberObject {
   /**
    * If `active` is `true`, all methods of play will cause this instance to play.
    * If `active` is `false`, the `playIfActive()` and `ifActivePlayIn()`
@@ -34,7 +37,7 @@ const Beat = EmberObject.extend({
    * @property active
    * @type {boolean}
    */
-  active: false,
+  active =  false;
 
   /**
    * Whether a Beat instance is currently playing, considering both active and
@@ -46,7 +49,7 @@ const Beat = EmberObject.extend({
    * @type {boolean}
    * @default false
    */
-  currentTimeIsPlaying: false,
+  currentTimeIsPlaying = false;
 
   /**
    * Whether a Beat instance is currently playing, considering only active beats.
@@ -58,7 +61,8 @@ const Beat = EmberObject.extend({
    * @type {boolean}
    * @default false
    */
-  isPlaying: false,
+  
+  isPlaying = false;
 
   /**
    * On Beat instance instantiation, this property should be set to the parent's
@@ -68,7 +72,7 @@ const Beat = EmberObject.extend({
    * @type {number|null}
    * @private
    */
-  _audioBufferDuration: null,
+  _audioBufferDuration = null;
 
   /**
    * If specified, Determines length of time, in milliseconds, before isPlaying
@@ -80,7 +84,7 @@ const Beat = EmberObject.extend({
    * @type {number}
    * @default 100
    */
-  duration: 100,
+  duration = 100;
 
   /**
    * Calls it's parent's `playIn()` method directly to play the beat in
@@ -102,7 +106,7 @@ const Beat = EmberObject.extend({
 
     later(() => this._markPlaying(), msOffset);
     later(() => this._markCurrentTimePlaying(), msOffset);
-  },
+  }
 
   /**
    * If the beat is marked `active`, calls it's parent's `playIn()` method
@@ -128,7 +132,7 @@ const Beat = EmberObject.extend({
     }
 
     later(() => this._markCurrentTimePlaying(), msOffset);
-  },
+  }
 
   /**
    * Calls it's parent's `play()` method directly to play the beat immediately.
@@ -142,7 +146,7 @@ const Beat = EmberObject.extend({
     this._parentPlay();
     this._markPlaying();
     this._markCurrentTimePlaying();
-  },
+  }
 
   /**
    * If `active`, calls it's parent's `play()` method directly to play the beat
@@ -160,9 +164,8 @@ const Beat = EmberObject.extend({
       this._parentPlay();
       this._markPlaying();
     }
-
     this._markCurrentTimePlaying();
-  },
+  }
 
   /**
    * Sets `isPlaying` to `true` and sets up a timer that sets `isPlaying` back
@@ -172,9 +175,11 @@ const Beat = EmberObject.extend({
    * @private
    */
   _markPlaying() {
-    this.set('isPlaying', true);
-    later(() => this.set('isPlaying', false), this.duration);
-  },
+    this.isPlaying = true;
+    later(() => {
+      this.isPlaying = false;
+    }, this.duration);
+  }
 
   /**
    * Sets `currentTimeIsPlaying` to `true` and sets up a timer that sets
@@ -184,9 +189,9 @@ const Beat = EmberObject.extend({
    * @private
    */
   _markCurrentTimePlaying() {
-    this.set('currentTimeIsPlaying', true);
-    later(() => this.set('currentTimeIsPlaying', false), this.duration);
-  },
-});
-
-export default Beat;
+    this.currentTimeIsPlaying = true;
+    later(() => { 
+      this.currentTimeIsPlaying = false;
+    }, this.duration);
+  }
+}

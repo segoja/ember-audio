@@ -35,7 +35,7 @@ import Ember from 'ember';
  * @uses Playable
  * @todo figure out why `isPlaying` isn't working for Oscillator
  */
-const Oscillator = EmberObject.extend(Connectable, Playable, {
+export default class Oscillator extends EmberObject.extend(Connectable, Playable) {
   /**
    * Determines the type of wave output by the OscillatorNode instance.
    * Corresponds directly to `type` from
@@ -46,7 +46,7 @@ const Oscillator = EmberObject.extend(Connectable, Playable, {
    * @type {string}
    * @default 'sine'
    */
-  type: 'sine',
+  type = 'sine';
 
   /**
    * Determines the frequency of the wave output by the OscillatorNode instance.
@@ -57,7 +57,7 @@ const Oscillator = EmberObject.extend(Connectable, Playable, {
    * @property frequency
    * @type {number}
    */
-  frequency: null,
+  frequency = null;
 
   /**
    * Determines the `gain.value` of the GainNode instance in the `gain`
@@ -68,7 +68,7 @@ const Oscillator = EmberObject.extend(Connectable, Playable, {
    * @property gain
    * @type {number}
    */
-  gain: null,
+  gain = null;
 
   /**
    * Lists available filter types.
@@ -77,7 +77,7 @@ const Oscillator = EmberObject.extend(Connectable, Playable, {
    * @property _filters
    * @type {array|string}
    */
-  _filters: [
+  _filters = [
     'lowpass',
     'highpass',
     'bandpass',
@@ -86,7 +86,9 @@ const Oscillator = EmberObject.extend(Connectable, Playable, {
     'peaking',
     'notch',
     'allpass',
-  ],
+  ];
+
+
 
   /**
    * Initializes default connections on Oscillator instantiation. Runs `on('init')`.
@@ -94,7 +96,9 @@ const Oscillator = EmberObject.extend(Connectable, Playable, {
    * @protected
    * @method _initConnections
    */
-  _initConnections: on('init', function () {
+  constructor () {
+    super(...arguments);
+    
     const filters = this._filters;
     const bufferSource = this._createBufferSource();
     const gain = this._createGainNode();
@@ -116,9 +120,9 @@ const Oscillator = EmberObject.extend(Connectable, Playable, {
     // add gain, panner, and destination connections
     connections.pushObjects([gain, panner, destination]);
 
-    this.set('connections', connections);
+    this.connections = connections;
     this.wireConnections();
-  }),
+  }
 
   /**
    * Creates a Connection instance backed with an `Oscillator` node.
@@ -145,7 +149,7 @@ const Oscillator = EmberObject.extend(Connectable, Playable, {
         },
       ],
     });
-  },
+  }
 
   /**
    * Creates a Connection instance backed with a `Gain` node.
@@ -167,7 +171,7 @@ const Oscillator = EmberObject.extend(Connectable, Playable, {
         },
       ],
     });
-  },
+  }
 
   /**
    * Creates a Connection instance backed with a `Panner` node.
@@ -183,7 +187,7 @@ const Oscillator = EmberObject.extend(Connectable, Playable, {
       source: 'audioContext',
       createCommand: 'createStereoPanner',
     });
-  },
+  }
 
   /**
    * Creates a Connection instance backed with a `Destination` node.
@@ -198,7 +202,7 @@ const Oscillator = EmberObject.extend(Connectable, Playable, {
       name: 'destination',
       path: 'audioContext.destination',
     });
-  },
+  }
 
   /**
    * Creates a Connection instance with a filter of the specified type.
@@ -235,7 +239,7 @@ const Oscillator = EmberObject.extend(Connectable, Playable, {
         },
       ],
     });
-  },
+  }
 
   /**
    * Settings object for the lowpass filter. The lowpass filter is disabled
@@ -246,7 +250,7 @@ const Oscillator = EmberObject.extend(Connectable, Playable, {
    * @property lowpass
    * @type {object}
    */
-  lowpass: null,
+  lowpass = null;
 
   /**
    * Settings object for the highpass filter. The highpass filter is disabled
@@ -257,7 +261,7 @@ const Oscillator = EmberObject.extend(Connectable, Playable, {
    * @property highpass
    * @type {object}
    */
-  highpass: null,
+  highpass = null;
 
   /**
    * Settings object for the bandpass filter. The bandpass filter is disabled
@@ -268,7 +272,7 @@ const Oscillator = EmberObject.extend(Connectable, Playable, {
    * @property bandpass
    * @type {object}
    */
-  bandpass: null,
+  bandpass = null;
 
   /**
    * Settings object for the lowshelf filter. The lowshelf filter is disabled
@@ -279,7 +283,7 @@ const Oscillator = EmberObject.extend(Connectable, Playable, {
    * @property lowshelf
    * @type {object}
    */
-  lowshelf: null,
+  lowshelf = null;
 
   /**
    * Settings object for the highshelf filter. The highshelf filter is disabled
@@ -290,7 +294,7 @@ const Oscillator = EmberObject.extend(Connectable, Playable, {
    * @property highshelf
    * @type {object}
    */
-  highshelf: null,
+  highshelf = null;
 
   /**
    * Settings object for the peaking filter. The peaking filter is disabled
@@ -301,7 +305,7 @@ const Oscillator = EmberObject.extend(Connectable, Playable, {
    * @property peaking
    * @type {object}
    */
-  peaking: null,
+  peaking = null;
 
   /**
    * Settings object for the notch filter. The notch filter is disabled
@@ -312,7 +316,7 @@ const Oscillator = EmberObject.extend(Connectable, Playable, {
    * @property notch
    * @type {object}
    */
-  notch: null,
+  notch = null;
 
   /**
    * Settings object for the allpass filter. The allpass filter is disabled
@@ -323,7 +327,5 @@ const Oscillator = EmberObject.extend(Connectable, Playable, {
    * @property allpass
    * @type {object}
    */
-  allpass: null,
-});
-
-export default Oscillator;
+  allpass = null;
+}

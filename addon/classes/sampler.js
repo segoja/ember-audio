@@ -14,7 +14,7 @@ import Ember from 'ember';
  * @todo humanize gain and time - should be optional and customizable
  * @todo loop
  */
-const Sampler = EmberObject.extend({
+export default class Sampler  extends EmberObject{
   /**
    * Determines the gain applied to each sample.
    *
@@ -23,7 +23,7 @@ const Sampler = EmberObject.extend({
    * @type {number}
    * @default 1
    */
-  gain: 1,
+  gain = 1;
 
   /**
    * Determines the stereo pan position of each sample.
@@ -33,7 +33,7 @@ const Sampler = EmberObject.extend({
    * @type {number}
    * @default 0
    */
-  pan: 0,
+  pan = 0;
 
   /**
    * Temporary storage for the iterable that comes from the sounds Set.
@@ -45,7 +45,7 @@ const Sampler = EmberObject.extend({
    * @type {Iterator}
    *
    */
-  _soundIterator: null,
+  _soundIterator = null;
 
   /**
    * Acts as a register for loaded audio sources. Audio sources can be anything
@@ -56,7 +56,7 @@ const Sampler = EmberObject.extend({
    * @property sounds
    * @type {set}
    */
-  sounds: null,
+  sounds = null;
 
   /**
    * Gets the next audio source and plays it immediately.
@@ -66,7 +66,7 @@ const Sampler = EmberObject.extend({
    */
   play() {
     this._getNextSound().play();
-  },
+  }
 
   /**
    * Gets the next Sound and plays it after the specified offset has elapsed.
@@ -79,7 +79,7 @@ const Sampler = EmberObject.extend({
    */
   playIn(seconds) {
     this._getNextSound().playIn(seconds);
-  },
+  }
 
   /**
    * Gets the next Sound and plays it at the specified moment in time. A
@@ -95,7 +95,7 @@ const Sampler = EmberObject.extend({
    */
   playAt(time) {
     this._getNextSound().playAt(time);
-  },
+  }
 
   /**
    * Gets _soundIterator and returns it's next value. If _soundIterator has
@@ -121,10 +121,10 @@ const Sampler = EmberObject.extend({
       nextSound = soundIterator.next();
     }
 
-    this.set('_soundIterator', soundIterator);
+    this._soundIterator = soundIterator;
 
     return this._setGainAndPan(nextSound.value);
-  },
+  }
 
   /**
    * Applies the `gain` and `pan` properties from the Sampler instance to a
@@ -139,7 +139,7 @@ const Sampler = EmberObject.extend({
     sound.changePanTo(this.pan);
 
     return sound;
-  },
+  }
 
   /**
    * Sets `sounds` to `new Set()` if null on instantiation.
@@ -147,11 +147,14 @@ const Sampler = EmberObject.extend({
    * @private
    * @method _initSounds
    */
-  _initSounds: on('init', function () {
-    if (!this.sounds) {
-      this.set('sounds', new Set());
-    }
-  }),
-});
-
-export default Sampler;
+  
+  constructor(){
+    super(...arguments);
+    
+    //this.addObserver('sounds', this, ()=>{
+      if (!this.sounds) {
+        this.sounds = new Set();
+      }
+    //});
+  }
+}

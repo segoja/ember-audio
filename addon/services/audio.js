@@ -20,7 +20,6 @@ import {
 } from 'ember-audio/utils';
 import Ember from 'ember';
 
-
 const AudioContext = window.AudioContext || window.webkitAudioContext;
 
 // Polyfill AudioContext for Safari
@@ -74,7 +73,7 @@ const { error, warn } = console;
  * for memory reasons? A long running app (like a game), might end up with lots
  * of sounds.
  */
-export default Service.extend({
+export default class AudioService extends Service{
   /**
    * An AudioContext instance from the Web Audio API. **NOT** available in all
    * browsers. Not available in any version of IE (except EDGE)
@@ -85,7 +84,7 @@ export default Service.extend({
    * @type {AudioContext}
    * @todo change this to audioContext to match other stuff, or change other stuff to audioContext
    */
-  audioContext: new AudioContext(),
+  audioContext = new AudioContext();
 
   /**
    * This acts as a register for Sound instances. Sound instances are placed in
@@ -95,7 +94,7 @@ export default Service.extend({
    * @property _sounds
    * @type {map}
    */
-  _sounds: new Map(),
+  _sounds = new Map();
 
   /**
    * This acts as a register for Sampler instances. Sampler instances are placed
@@ -105,7 +104,7 @@ export default Service.extend({
    * @property _samplers
    * @type {map}
    */
-  _samplers: new Map(),
+  _samplers = new Map();
 
   /**
    * This acts as a register for soundfonts. A font is just a `Map` of Note
@@ -116,7 +115,7 @@ export default Service.extend({
    * @property _fonts
    * @type {map}
    */
-  _fonts: new Map(),
+  _fonts = new Map();
 
   /**
    * This acts as a register for Track instances. Track instances are placed in
@@ -126,7 +125,7 @@ export default Service.extend({
    * @property _tracks
    * @type {map}
    */
-  _tracks: new Map(),
+  _tracks = new Map();
 
   /**
    * This acts as a register for BeatTrack instances. BeatTrack instances are
@@ -137,7 +136,7 @@ export default Service.extend({
    * @property _beatTracks
    * @type {map}
    */
-  _beatTracks: new Map(),
+  _beatTracks = new Map();
 
   /**
    * Acts as a proxy method, returns a POJO with methods that return the _load
@@ -268,7 +267,7 @@ export default Service.extend({
         return createNoteArray(json);
       },
     };
-  },
+  }
 
   /**
    * Creates an array of Note objects from a json object containing notes and
@@ -295,7 +294,7 @@ export default Service.extend({
     }
 
     return notes;
-  },
+  }
 
   /**
    * Creates a Sound instance with it's audioBuffer filled with one sample's
@@ -319,7 +318,7 @@ export default Service.extend({
     }
 
     return Sound.create(Object.assign(opts, { audioContext, audioBuffer }));
-  },
+  }
 
   /**
    * Creates an Oscillator instance.
@@ -334,7 +333,7 @@ export default Service.extend({
   createOscillator(opts = {}) {
     const audioContext = this.audioContext;
     return Oscillator.create(Object.assign(opts, { audioContext }));
-  },
+  }
 
   /**
    * Gets a BeatTrack instance by name from the _beatTracks register.
@@ -349,7 +348,7 @@ export default Service.extend({
    */
   getBeatTrack(name) {
     return this._beatTracks.get(name);
-  },
+  }
 
   /**
    * Gets a Sound instance by name from the _sounds register
@@ -364,7 +363,7 @@ export default Service.extend({
    */
   getSound(name) {
     return this._sounds.get(name);
-  },
+  }
 
   /**
    * Gets a Track instance by name from the _tracks register
@@ -379,7 +378,7 @@ export default Service.extend({
    */
   getTrack(name) {
     return this._tracks.get(name);
-  },
+  }
 
   /**
    * Gets a soundfont Map by name from the _fonts register and allows it to be
@@ -399,7 +398,7 @@ export default Service.extend({
    */
   getFont(name) {
     return this._fonts.get(name);
-  },
+  }
 
   /**
    * Gets a Sampler instance by name from the _samplers register
@@ -414,7 +413,7 @@ export default Service.extend({
    */
   getSampler(name) {
     return this._samplers.get(name);
-  },
+  }
 
   /**
    * Gets all instances of requested type and calls
@@ -430,7 +429,7 @@ export default Service.extend({
     for (let sound of this.get(`_${type}`).values()) {
       sound.stop();
     }
-  },
+  }
 
   /**
    * Gets all Track instances and calls
@@ -444,7 +443,7 @@ export default Service.extend({
     for (let sound of this._tracks.values()) {
       sound.pause();
     }
-  },
+  }
 
   /**
    * Given a sound's name and type, removes the sound from it's register.
@@ -460,7 +459,7 @@ export default Service.extend({
   removeFromRegister(type, name) {
     const register = this._getRegisterFor(type);
     register.delete(name);
-  },
+  }
 
   /**
    * Gets a register by it's type.
@@ -483,7 +482,7 @@ export default Service.extend({
       case 'font':
         return this._fonts;
     }
-  },
+  }
 
   /**
    * Creates an {{#crossLinkModule "Audio"}}Audio Class{{/crossLinkModule}}
@@ -511,7 +510,7 @@ export default Service.extend({
       default:
         return Sound.create(props);
     }
-  },
+  }
 
   /**
    * Loads and decodes an audio file, creating a Sound, Track, or BeatTrack
@@ -561,7 +560,7 @@ export default Service.extend({
           'This error was probably caused by a 404 or an incompatible audio file type'
         );
       });
-  },
+  }
 
   /**
    * 1. Creates a Font instance and places it in the fonts register.
@@ -624,7 +623,7 @@ export default Service.extend({
 
         .catch((err) => error('ember-audio:', err))
     );
-  },
+  }
 
   /**
    * Creates a BeatTrack instance from an array of URLs.
@@ -647,7 +646,7 @@ export default Service.extend({
       const sounds = new Set(soundsArray);
       return BeatTrack.create({ sounds, audioContext, name });
     });
-  },
+  }
 
   /**
    * Accepts an array of URLs to audio files and creates a Sound instance for
@@ -670,7 +669,7 @@ export default Service.extend({
     });
 
     return all(sounds);
-  },
+  }
 
   /**
    * Takes an array of base64 encoded strings (notes) and returns an array of
@@ -703,7 +702,7 @@ export default Service.extend({
 
     // Wait for array of promises to resolve before continuing
     return all(promises);
-  },
+  }
 
   /**
    * Takes an array of arrays, each inner array acting as
@@ -745,5 +744,5 @@ export default Service.extend({
     font.set('notes', sortNotes(notes));
 
     return font;
-  },
-});
+  }
+}

@@ -26,6 +26,4 @@ import { MusicalIdentity } from 'ember-audio/mixins';
  * @extends Sound
  * @uses MusicalIdentity
  */
-const SampledNote = Sound.extend(MusicalIdentity);
-
-export default SampledNote;
+export default class SampledNote extends Sound.extend(MusicalIdentity){}

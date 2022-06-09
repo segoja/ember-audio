@@ -9,7 +9,7 @@ import EmberObject from '@ember/object';
  * @public
  * @class Font
  */
-const Font = EmberObject.extend({
+export default class Font extends EmberObject{
   /**
    * Acts as a register for all the notes in the font. If null on instantiation,
    * set to `A()` via `_initNotes`.
@@ -18,7 +18,7 @@ const Font = EmberObject.extend({
    * @property notes
    * @type {Ember.MutableArray}
    */
-  notes: null,
+  notes = null;
 
   /**
    * Plays a note from `notes`, given it's `identifier`.
@@ -31,7 +31,7 @@ const Font = EmberObject.extend({
    */
   play(identifier) {
     this.getNote(identifier).play();
-  },
+  }
 
   /**
    * Gets a note from `notes`, given it's identifier.
@@ -46,7 +46,7 @@ const Font = EmberObject.extend({
    */
   getNote(identifier) {
     return this.notes.findBy('identifier', identifier);
-  },
+  }
 
   /**
    * Sets `notes` to `A()` if null on instantiation.
@@ -54,11 +54,10 @@ const Font = EmberObject.extend({
    * @private
    * @method _initNotes
    */
-  _initNotes: on('init', function () {
+  constructor(){
+    super(...arguments);
     if (!this.notes) {
-      this.set('notes', A());
+      this.notes = A();
     }
-  }),
-});
-
-export default Font;
+  }
+}

@@ -1,6 +1,7 @@
 import { computed } from '@ember/object';
 import Beat from './beat';
 import Sampler from './sampler';
+import { tracked } from '@glimmer/tracking';
 
 const beatBank = new WeakMap();
 
@@ -18,7 +19,7 @@ const beatBank = new WeakMap();
  * the times in advance and not calling play until it's the next beat in the
  * queue?
  */
-const BeatTrack = Sampler.extend({
+export default class BeatTrack extends Sampler {
   /**
    * Determines the number of beats in a BeatTrack instance.
    *
@@ -26,8 +27,8 @@ const BeatTrack = Sampler.extend({
    * @property numBeats
    * @type {number}
    */
-  numBeats: 4,
-
+  @tracked numBeats = 4;
+  
   /**
    * If specified, Determines length of time, in milliseconds, before isPlaying
    * and currentTimeIsPlaying are automatically switched back to false after
@@ -38,7 +39,7 @@ const BeatTrack = Sampler.extend({
    * @type {number}
    * @default 100
    */
-  duration: 100,
+  @tracked duration = 100;
 
   /**
    * Computed property. An array of Beat instances. The number of Beat instances
@@ -51,7 +52,8 @@ const BeatTrack = Sampler.extend({
    * @property beats
    * @type {array|Beat}
    */
-  beats: computed('duration', 'numBeats', 'play', 'playIn', function () {
+   
+  get beats () {
     let beats = [];
     let numBeats = this.numBeats;
     let existingBeats;
@@ -78,7 +80,7 @@ const BeatTrack = Sampler.extend({
     beatBank.set(this, beats);
 
     return beats;
-  }),
+  }
 
   /**
    * Calls play on all Beat instances in the beats array.
@@ -94,7 +96,7 @@ const BeatTrack = Sampler.extend({
    */
   playBeats(bpm, noteType) {
     this._callPlayMethodOnBeats('playIn', bpm, noteType);
-  },
+  }
 
   /**
    * Calls play on `active` Beat instances in the beats array. Any beat that
@@ -111,7 +113,7 @@ const BeatTrack = Sampler.extend({
    */
   playActiveBeats(bpm, noteType) {
     this._callPlayMethodOnBeats('ifActivePlayIn', bpm, noteType);
-  },
+  }
 
   /**
    * The underlying method behind playBeats and playActiveBeats.
@@ -131,7 +133,5 @@ const BeatTrack = Sampler.extend({
     // http://bradthemad.org/guitar/tempo_explanation.php
     const duration = (240 * noteType) / bpm;
     this.beats.map((beat, idx) => beat[method](idx * duration));
-  },
-});
-
-export default BeatTrack;
+  }
+}

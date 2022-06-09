@@ -17,7 +17,7 @@ import { on } from '@ember/object/evented';
  * @public
  * @class Connection
  */
-const Connection = EmberObject.extend({
+export default class Connection extends EmberObject{
   /**
    * The name of the connection. This is the name that can be used to
    * get an AudioNode instance via the
@@ -29,7 +29,7 @@ const Connection = EmberObject.extend({
    * @property name
    * @type {string}
    */
-  name: null,
+  name = null;
 
   /**
    * If an AudioNode instance already exists and is accessible to the Sound
@@ -50,7 +50,7 @@ const Connection = EmberObject.extend({
    * @property path
    * @type {string}
    */
-  path: null,
+  path = null;
 
   /**
    * If `createCommand` is specified, the object at this location (relative to
@@ -68,7 +68,7 @@ const Connection = EmberObject.extend({
    * @property source
    * @type {string}
    */
-  source: null,
+  source = null;
 
   /**
    * If `source` is specified, this method will be called on the object that was
@@ -87,7 +87,7 @@ const Connection = EmberObject.extend({
    * @property createCommand
    * @type {string}
    */
-  createCommand: null,
+  createCommand = null;
 
   /**
    * An array of POJOs that specify properties that need to be set on a node
@@ -129,7 +129,7 @@ const Connection = EmberObject.extend({
    * @type {Ember.MutableArray}
    * @default Ember.A() via _initArrays
    */
-  onPlaySetAttrsOnNode: null,
+  onPlaySetAttrsOnNode = null;
 
   /**
    * Items in this array are set at play-time on the `node` via an exponential
@@ -155,8 +155,8 @@ const Connection = EmberObject.extend({
    * @type {Ember.MutableArray}
    * @default Ember.A() via _initArrays
    */
-  exponentialRampToValuesAtTime: null,
-
+  exponentialRampToValuesAtTime = null;
+  
   /**
    * Items in this array are set at play-time on the `node` via a linear ramp
    * that ends at the specified time.
@@ -181,7 +181,7 @@ const Connection = EmberObject.extend({
    * @type {Ember.MutableArray}
    * @default Ember.A() via _initArrays
    */
-  linearRampToValuesAtTime: null,
+  linearRampToValuesAtTime = null;
 
   /**
    * Items in this array are set at play-time on the `node` via an exponential
@@ -207,7 +207,7 @@ const Connection = EmberObject.extend({
    * @type {Ember.MutableArray}
    * @default Ember.A() via _initArrays
    */
-  setValuesAtTime: null,
+  setValuesAtTime = null;
 
   /**
    * Items in this array are set immediately at play-time on the `node`.
@@ -231,7 +231,7 @@ const Connection = EmberObject.extend({
    * @type {Ember.MutableArray}
    * @default Ember.A() via _initArrays
    */
-  startingValues: null,
+  startingValues = null;
 
   /**
    * This is the main attraction here in connection-land. All the other
@@ -246,7 +246,7 @@ const Connection = EmberObject.extend({
    * @property node
    * @type {AudioNode}
    */
-  node: null,
+  node = null;
 
   /**
    * If this is true, the AudioNode will be created every time the consuming
@@ -257,7 +257,7 @@ const Connection = EmberObject.extend({
    * @type {boolean}
    * @default false
    */
-  createdOnPlay: false,
+  createdOnPlay = false;
 
   /**
    * Allows an AudioNode's values to be set at a specific time
@@ -310,7 +310,7 @@ const Connection = EmberObject.extend({
         };
       },
     };
-  },
+  }
 
   /**
    * Convenience method that uses
@@ -347,7 +347,7 @@ const Connection = EmberObject.extend({
         };
       },
     };
-  },
+  }
 
   /**
    * If any of the array types are null on init, set them to an
@@ -356,7 +356,10 @@ const Connection = EmberObject.extend({
    * @private
    * @method _initArrays
    */
-  _initArrays: on('init', function () {
+   
+   constructor(){
+    super(...arguments);
+   
     const arrays = [
       'onPlaySetAttrsOnNode',
       'exponentialRampToValuesAtTime',
@@ -370,7 +373,5 @@ const Connection = EmberObject.extend({
         this.set(name, A());
       }
     });
-  }),
-});
-
-export default Connection;
+  }
+}

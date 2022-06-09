@@ -10,7 +10,7 @@ import EmberObject from '@ember/object';
  * @public
  * @class LayeredSound
  */
-const LayeredSound = EmberObject.extend({
+export default class LayeredSound extends EmberObject{
   /**
    * Acts as a register for different types of sounds. Anything that uses
    * {{#crossLink "Playable"}}{{/crossLink}} can be added to this register.
@@ -20,7 +20,7 @@ const LayeredSound = EmberObject.extend({
    * @property sounds
    * @type {array|Sound|Oscillator}
    */
-  sounds: null,
+  sounds = null;
 
   /**
    * Maps through objects in `sounds` and calls `play` on each
@@ -30,7 +30,7 @@ const LayeredSound = EmberObject.extend({
    */
   play() {
     this.sounds.map((sound) => sound.play());
-  },
+  }
 
   /**
    * Maps through objects in `sounds` and calls `playAt` on each, passing
@@ -43,7 +43,7 @@ const LayeredSound = EmberObject.extend({
    */
   playAt(time) {
     this.sounds.map((sound) => sound.playAt(time));
-  },
+  }
 
   /**
    * Maps through objects in `sounds` and calls `playIn` on each, passing
@@ -56,7 +56,7 @@ const LayeredSound = EmberObject.extend({
    */
   playIn(seconds) {
     this.sounds.map((sound) => sound.playIn(seconds));
-  },
+  }
 
   /**
    * Maps through objects in `sounds` and calls `playFor` on each, passing
@@ -69,7 +69,7 @@ const LayeredSound = EmberObject.extend({
    */
   playFor(seconds) {
     this.sounds.map((sound) => sound.playFor(seconds));
-  },
+  }
 
   /**
    * Maps through objects in `sounds` and calls `playInAndStopAfter` on each,
@@ -86,7 +86,7 @@ const LayeredSound = EmberObject.extend({
    */
   playInAndStopAfter(playIn, stopAfter) {
     this.sounds.map((sound) => sound.playInAndStopAfter(playIn, stopAfter));
-  },
+  }
 
   /**
    * If `sounds` is null on instantiation, sets it to `A()`
@@ -94,11 +94,14 @@ const LayeredSound = EmberObject.extend({
    * @private
    * @method _initSounds
    */
-  _initSounds: on('init', function () {
-    if (!this.sounds) {
-      this.set('sounds', A());
-    }
-  }),
-});
+  constructor(){
+    super(...arguments);
+    
+    //this.addObserver('sounds', this, ()=>{
+      if (!this.sounds) {
+        this.sounds =  A();
+      }
+    //});
+  }   
 
-export default LayeredSound;
+}

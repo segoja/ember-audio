@@ -1,7 +1,7 @@
 import EmberObject, { computed } from '@ember/object';
 import { Connectable, Playable } from 'ember-audio/mixins';
 import { createTimeObject, withinRange } from 'ember-audio/utils';
-import Ember from 'ember';
+import { tracked } from '@glimmer/tracking';
 
 /**
  * The Sound class provides the core functionality for
@@ -18,7 +18,10 @@ import Ember from 'ember';
  * @uses Connectable
  * @uses Playable
  */
-const Sound = EmberObject.extend(Connectable, Playable, {
+ 
+
+ 
+export default class Sound extends EmberObject.extend(Connectable, Playable){
   /**
    * When using the {{#crossLink "Audio-Service"}}{{/crossLink}}, The name that
    * this Sound instance is registered as on it's parent register.
@@ -27,7 +30,7 @@ const Sound = EmberObject.extend(Connectable, Playable, {
    * @property name
    * @type {string}
    */
-  name: null,
+  name = null;
 
   /**
    * The AudioBuffer instance that provides audio data to the bufferSource connection.
@@ -36,7 +39,7 @@ const Sound = EmberObject.extend(Connectable, Playable, {
    * @property audioBuffer
    * @type {AudioBuffer}
    */
-  audioBuffer: null,
+  @tracked audioBuffer = null;
 
   /**
    * The parent
@@ -52,7 +55,7 @@ const Sound = EmberObject.extend(Connectable, Playable, {
    * @property audioContext
    * @type {AudioContext}
    */
-  audioContext: null,
+  audioContext = null;
 
   /**
    * When a Sound instance plays, this is set to the `audioContext.currentTime`.
@@ -63,7 +66,7 @@ const Sound = EmberObject.extend(Connectable, Playable, {
    * @type {number}
    * @private
    */
-  _startedPlayingAt: 0,
+  _startedPlayingAt = 0;
 
   /**
    * When a Sound instance is played, this value is passed to the
@@ -75,7 +78,7 @@ const Sound = EmberObject.extend(Connectable, Playable, {
    * @property startOffset
    * @type {number}
    */
-  startOffset: 0,
+  @tracked startOffset = 0;
 
   /**
    * Computed property. Value is an object containing the duration of the
@@ -97,12 +100,12 @@ const Sound = EmberObject.extend(Connectable, Playable, {
    * @property duration
    * @type {object}
    */
-  duration: computed('audioBuffer.duration', function () {
-    const duration = this.get('audioBuffer.duration');
+  get duration () {
+    const duration = this.audioBuffer.duration;
     const min = Math.floor(duration / 60);
     const sec = duration % 60;
     return createTimeObject(duration, min, sec);
-  }),
+  }
 
   /**
    * Computed property. Value is the amount of gain currently applied to the
@@ -112,9 +115,9 @@ const Sound = EmberObject.extend(Connectable, Playable, {
    * @property percentGain
    * @type {number}
    */
-  percentGain: computed(function () {
+  get percentGain () {
     return this.getNodeFrom('gain').gain.value * 100;
-  }),
+  }
 
   /**
    * Gets the `panner` connection and changes it's pan value to the value passed in.
@@ -127,7 +130,7 @@ const Sound = EmberObject.extend(Connectable, Playable, {
    */
   changePanTo(value) {
     this.getNodeFrom('panner').pan.value = withinRange(value, 0, 1);
-  },
+  }
 
   /**
    * Gets the `gain` connection and changes it's gain value to the value passed in.
@@ -170,7 +173,7 @@ const Sound = EmberObject.extend(Connectable, Playable, {
         }
       },
     };
-  },
+  }
 
   /**
    * Gets the bufferSource and stops the audio,
@@ -197,7 +200,7 @@ const Sound = EmberObject.extend(Connectable, Playable, {
    * change accordingly.
    */
   seek(amount) {
-    const duration = this.get('duration.raw');
+    const duration = this.duration.raw;
 
     const moveToOffset = (offset) => {
       const isPlaying = this.isPlaying;
@@ -225,7 +228,5 @@ const Sound = EmberObject.extend(Connectable, Playable, {
         }
       },
     };
-  },
-});
-
-export default Sound;
+  }
+}

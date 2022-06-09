@@ -1,17 +1,16 @@
 import { inject as service } from '@ember/service';
-import { on } from '@ember/object/evented';
 import Controller from '@ember/controller';
+import { action } from '@ember/object';
 
-export default Controller.extend({
-  audio: service(),
+export default class IndesController extends Controller{
+   @service audio;
 
-  initAudioFile: on('init', function () {
+  constructor(){
+    super(...arguments);
     this.audio.load('Eb5.mp3').asSound('piano-note');
-  }),
+  }
 
-  actions: {
-    playSound() {
-      this.audio.getSound('piano-note').play();
-    },
-  },
-});
+  @action playSound() {
+    this.audio.getSound('piano-note').play();
+  }
+}

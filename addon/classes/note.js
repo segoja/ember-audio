@@ -11,6 +11,5 @@ import { MusicalIdentity } from 'ember-audio/mixins';
  * @class Note
  * @uses MusicalIdentity
  */
-const Note = EmberObject.extend(MusicalIdentity);
 
-export default Note;
+export default class Note extends EmberObject.extend(MusicalIdentity){}

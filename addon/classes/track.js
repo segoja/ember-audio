@@ -1,4 +1,3 @@
-import { computed } from '@ember/object';
 import Sound from './sound';
 import { createTimeObject } from 'ember-audio/utils';
 
@@ -12,7 +11,9 @@ import { createTimeObject } from 'ember-audio/utils';
  * @extends Sound
  * @todo move play override to _play so that all super.play methods work
  */
-const Track = Sound.extend({
+
+
+export default class Track extends Sound{
   /**
    * Computed property. Value is an object containing the current play position
    * of the audioBuffer in three formats. The three
@@ -33,12 +34,12 @@ const Track = Sound.extend({
    * @property position
    * @type {object}
    */
-  position: computed('startOffset', function () {
+  get position() {
     const offset = this.startOffset;
     const min = Math.floor(offset / 60);
     const sec = offset - min * 60;
     return createTimeObject(offset, min, sec);
-  }),
+  }
 
   /**
    * Computed property. Value is the current play position of the
@@ -48,10 +49,10 @@ const Track = Sound.extend({
    * @property percentPlayed
    * @type {number}
    */
-  percentPlayed: computed('duration.raw', 'startOffset', function () {
-    const ratio = this.startOffset / this.get('duration.raw');
+  get percentPlayed() {
+    const ratio = this.startOffset / this.duration.raw;
     return ratio * 100;
-  }),
+  }
 
   /**
    * Plays the audio source immediately.
@@ -63,7 +64,7 @@ const Track = Sound.extend({
     this._super();
     this.getNodeFrom('audioSource').onended = () => this.stop();
     this._trackPlayPosition();
-  },
+  }
 
   /**
    * Pauses the audio source by stopping without
@@ -78,9 +79,9 @@ const Track = Sound.extend({
 
       node.onended = function () {};
       node.stop();
-      this.set('isPlaying', false);
+      this.isPlaying = false;
     }
-  },
+  }
 
   /**
    * Stops the audio source and sets
@@ -90,13 +91,13 @@ const Track = Sound.extend({
    * @method stop
    */
   stop() {
-    this.set('startOffset', 0);
+    this.startOffset = 0;
 
     if (this.isPlaying) {
       this.getNodeFrom('audioSource').onended = function () {};
       this._super();
     }
-  },
+  }
 
   /**
    * Sets up a `requestAnimationFrame` based loop that updates the
@@ -113,16 +114,11 @@ const Track = Sound.extend({
 
     const animate = () => {
       if (this.isPlaying) {
-        this.set(
-          'startOffset',
-          startOffset + ctx.currentTime - startedPlayingAt
-        );
+        this.startOffset = startOffset + ctx.currentTime - startedPlayingAt;
         requestAnimationFrame(animate);
       }
     };
 
     requestAnimationFrame(animate);
-  },
-});
-
-export default Track;
+  }
+}
